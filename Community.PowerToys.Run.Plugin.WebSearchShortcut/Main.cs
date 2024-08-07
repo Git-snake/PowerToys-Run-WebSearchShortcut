@@ -290,6 +290,8 @@ namespace Community.PowerToys.Run.Plugin.WebSearchShortcut
     {
       string url = item.Url;
 
+      int score = Equals(item.Keyword, args) || Equals(item.Name, args) ? 101 : 100;
+
       if (!url.Contains("%s"))
       {
         return new Result
@@ -299,7 +301,7 @@ namespace Community.PowerToys.Run.Plugin.WebSearchShortcut
           IcoPath = item.IconPath ?? IconPath["Search"],
           Title = item.Name,
           SubTitle = $"{Resources.open} {item.Name}",
-          Score = 100,
+          Score = score,
           Action = _ => OpenInBrowser(url),
           ToolTipData = new ToolTipData($"{Resources.open} {item.Name} (Enter)", $"{url}"),
           ContextData = item,
@@ -312,7 +314,7 @@ namespace Community.PowerToys.Run.Plugin.WebSearchShortcut
         IcoPath = item.IconPath ?? IconPath["Search"],
         Title = item.Name,
         SubTitle = Resources.select_subtitle.Replace("%name", item.Name),
-        Score = 100,
+        Score = score,
         Action = _ =>
         {
           var newQuery = string.IsNullOrWhiteSpace(query.ActionKeyword)
